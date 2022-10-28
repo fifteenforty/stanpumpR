@@ -34,14 +34,11 @@ ui <- function(request) {
         column(
           width=4,
           fluidRow(  # start of fluid row within this column
-            h4("Patient Covariates"),
-            style = "border-style: solid; border-color: white;  border-radius: 5px;",
             column(
               width = 4,
               div(
-                class = "form-first-row",
+                h4("Patient Covariates"),
                 div( # Age ************************************
-                  class = "cancel-margin",
                   numericInput(
                     inputId = "age",
                     label = "Age",
@@ -56,19 +53,18 @@ ui <- function(request) {
                     options = list(container = "body")
                   )
                 ), # end of cancel-margin div
-                div( #style = "font-size: 10px;",
+                div(
                   radioButtons(
                     inputId = "ageUnit",
                     label = NULL,
                     choiceNames = c("years","months"),
                     choiceValues = c(UNIT_YEAR, UNIT_MONTH),
-                    inline = TRUE,
+                    inline = FALSE,
                     selected = defaultAgeUnit
                   )
                 )
               ), # end of form-first-row div
               div( # weight *****************************************
-                class = "cancel-margin",
                 numericInput(
                   inputId = "weight",
                   label = "Weight",
@@ -88,11 +84,10 @@ ui <- function(request) {
                 label = NULL,
                 choiceNames = c("kg", "lb"),
                 choiceValues = c(UNIT_KG, UNIT_LB),
-                inline = TRUE,
+                inline = FALSE,
                 selected = defaultWeightUnit
               ),
               div( # Height ********************************************
-                class = "cancel-margin",
                 numericInput(
                   inputId = "height",
                   label = "Height",
@@ -112,7 +107,7 @@ ui <- function(request) {
                 label = NULL,
                 choiceNames = c("cms","inches"),
                 choiceValues = c(UNIT_CM, UNIT_INCH),
-                inline = TRUE,
+                inline = FALSE,
                 selected = defaultHeightUnit
               )
             ), # end of column
@@ -125,7 +120,7 @@ ui <- function(request) {
                 label = "Sex",
                 choiceNames = c("Male","Female"),
                 choiceValues = c("male","female"),
-                inline = TRUE,
+                inline = FALSE,
                 selected = defaultSex
               ),
               #            ), # end of class: form-first-row div
@@ -136,7 +131,7 @@ ui <- function(request) {
                   label = "Pregnant",
                   choiceNames = c("Yes","No"),
                   choiceValues = c(TRUE, FALSE),
-                  inline = TRUE,
+                  inline = FALSE,
                   selected = FALSE
                 ),
                 bsTooltip(
@@ -177,15 +172,13 @@ ui <- function(request) {
             )
           ), # fluidrow within column
           fluidRow(
-            h4("Dose Table"),
-            style = "border-style: solid; border-color: white;  border-radius: 5px; height: 450px; ",
-
             column(
               width=12,
               fluidRow(
                 column(
-                  width = 4,
-                  textInput("referenceTime", "Reference Time", placeholder = "HH:MM"),
+                  width = 8,
+                  h4("Dose Table"),
+                  textInput("referenceTime", "Simulation Start (Reference) Time", placeholder = "HH:MM"),
                   bsTooltip(
                     id = "referenceTime",
                     title = 'Time is selected based on your local time. Select "none" for absolute time.',
@@ -198,6 +191,8 @@ ui <- function(request) {
               # you would replace the existing "rHandsontableOutput()" function with JavaScript code that
               # will process and validate the table.
               tags$script(src = "hot_funs.js"),
+              h4('Bolus and infusion changes'),
+              p('Enter the time (minutes from start time or 24 hour clock) and the bolus or infusion rate. To discontinue an infusion, enter a dose of 0 at the end time. Add lines as required.'),
               rHandsontableOutput(outputId = "doseTableHTML"),
               bsTooltip(
                 id = "doseTableHTML",
@@ -239,14 +234,13 @@ ui <- function(request) {
           ), # End of fillPage
           ############################################################################
           fluidRow(
-            style = "border-style: solid; border-color: white;  border-radius: 5px; height: 300px",
             h4("Graph Options"),
             column( # Column 1, Simulation Mode
               width = 2,
               textInput(
                 inputId = "title",
                 label = "Title",
-                value = paste("Simulation on",Sys.time())
+                value = paste("stanpumpR Simulation on",Sys.time())
               ),
               bsTooltip(
                 id = "title",
@@ -267,7 +261,6 @@ ui <- function(request) {
                 options = list(container = "body")
               ),
               div(
-                style = "padding-bottom: 10px;",
                 actionButton(
                   inputId = "setTarget",
                   label = "Suggest",
@@ -382,7 +375,6 @@ ui <- function(request) {
                   width = 3,
                   div(
                     id = "sendSlideButton",
-                    style = "padding-top: 25px;",
                     actionButton(
                       inputId = "sendSlide",
                       label = "GO!",
@@ -397,7 +389,6 @@ ui <- function(request) {
                   ),
                   div(
                     id = "sendSlideError",
-                    style = "padding-top: 25px;",
                     "Check address"
                   )
                 )
