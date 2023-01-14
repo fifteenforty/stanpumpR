@@ -6,6 +6,8 @@ recoveryCalc <-   function(
   target
   )
 {
+  if (is.null(target)) return(0)
+  if (length(state) == 0) return(0)
   if (target >= sum(state)) return(0)
   return (
     optimize(
